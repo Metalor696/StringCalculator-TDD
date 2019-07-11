@@ -10,10 +10,10 @@ namespace StringCalculator
 		{
 			int total = 0;
 
-			if ( string.IsNullOrEmpty( numbersToAdd) )
+			if ( string.IsNullOrEmpty( numbersToAdd ) )
 				return total;
 
-			var stringList = numbersToAdd.Split(",").ToList();
+			var stringList = numbersToAdd.Split( new char[ ] { ',', '\n' } ).ToList( );
 
 			var intsToCalculate = getNumbersFromString( stringList );
 			

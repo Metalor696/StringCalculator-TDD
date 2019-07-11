@@ -58,5 +58,14 @@ namespace StringCalculatorUnitTests
 
 			Assert.Equal( expectedInt, result );
 		}
+
+		[Fact]
+		public void whenNewLineIsUsedBetweenNumbersThenReturnValuesAreTheirSums( )
+		{
+			var expectedInt = 3 + 6 + 15;
+			var result = StringCalculator.Add("3,6\n15");
+
+			Assert.Equal( expectedInt, result );
+		}
 	}
 }
