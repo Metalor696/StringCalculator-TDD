@@ -6,20 +6,41 @@ namespace StringCalculator
 {
 	public class StringCalculator
 	{
-		public int Add( string numbersToAdd )
+		public int Add( string userStringCommand )
 		{
 			int total = 0;
 
-			if ( string.IsNullOrEmpty( numbersToAdd ) )
+			var delimiterKey = "//";
+			var delimiters = new List<char> { ',', '\n' };			
+
+			string workingString = userStringCommand;
+
+			if ( string.IsNullOrEmpty( userStringCommand ) )
 				return total;
 
-			var stringList = numbersToAdd.Split( new char[ ] { ',', '\n' } ).ToList( );
+			if ( userStringCommand.StartsWith( delimiterKey ) )
+			{
+				workingString = workingString.Remove( 0, 2 );
+				delimiters.AddRange( getCustomDelimiters( workingString ) );
+			}
+
+			var stringList = workingString.Split( delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries ).ToList( );
+
+			Console.WriteLine("start");
+			stringList.ForEach( x => Console.WriteLine(x));
 
 			var intsToCalculate = getNumbersFromString( stringList );
 			
 			intsToCalculate.ForEach( x => total += x );
 
 			return total;
+		}
+
+		private List<char> getCustomDelimiters( string workingString )
+		{
+			var customDelimiters = new List<char>(){ workingString.First() };
+
+			return customDelimiters;
 		}
 
 		private List<int> getNumbersFromString( List<string> stringList )

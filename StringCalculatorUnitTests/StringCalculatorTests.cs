@@ -67,5 +67,14 @@ namespace StringCalculatorUnitTests
 
 			Assert.Equal( expectedInt, result );
 		}
+
+		[Fact]
+		public void whenDelimiterIsSpecifiedThenItIsUsedToSeparateNumbers( )
+		{
+			var expectedInt = 3 + 6 + 15;
+			var result = StringCalculator.Add("//;\n3;6;15");
+
+			Assert.Equal( expectedInt, result );
+		}
 	}
 }
