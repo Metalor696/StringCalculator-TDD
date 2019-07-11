@@ -6,29 +6,36 @@ namespace StringCalculator
 {
 	public class StringCalculator
 	{
-		public bool Add(string numbersToAdd )
+		public int Add( string numbersToAdd )
 		{
-			var intsToCalculate = getNumbersFromString(numbersToAdd);
+			if ( string.IsNullOrEmpty( numbersToAdd) )
+				return 0;
+
+			var stringList = numbersToAdd.Split(",").ToList();
+
+			var intsToCalculate = getNumbersFromString( stringList );
 			
 			if ( intsToCalculate.Count > 2 )
-				throw new InvalidArgumentException("Please don't provide more than 2 numbers to add, mate.");
+				throw new InvalidArgumentException( "Please don't provide more than 2 numbers to add, mate." );
 
-			return true;
+			int total = 0;
+			 
+			intsToCalculate.ForEach( x => total += x );
+
+			return total;
 		}
 
-		private List<int> getNumbersFromString( string numberString )
+		private List<int> getNumbersFromString( List<string> stringList )
 		{
-			var stringList = numberString.Split(",").ToList();
-
 			List<int> intList;
 
 			try
 			{
-				intList =  stringList.Select( x => int.Parse(x)).ToList();
+				intList =  stringList.Select( x => int.Parse(x)).ToList() ;
 			}
-			catch ( Exception )
+			catch ( FormatException e )
 			{
-				throw new InvalidArgumentException("Please don't try to add numbers that aren't actually numbers, mate.");
+				throw new InvalidArgumentException( "Please don't try to add numbers that aren't actually numbers, mate.", e );
 			}
 
 			return intList;
@@ -40,6 +47,10 @@ namespace StringCalculator
 		public InvalidArgumentException( string message ) : base( message )
 		{
 
+		}
+
+		public InvalidArgumentException( string message, Exception innerException ) : base( message, innerException )
+		{
 		}
 	}
 }

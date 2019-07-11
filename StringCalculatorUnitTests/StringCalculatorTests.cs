@@ -28,5 +28,26 @@ namespace StringCalculatorUnitTests
 		{			
 			Assert.Throws<InvalidArgumentException>( () => StringCalculator.Add("1,X"));
 		}
+
+		[Fact]
+		public void whenEmptyStringIsUsedThenReturnValueIs0( )
+		{
+			var result = StringCalculator.Add("");
+			Assert.Equal( 0, result );
+		}
+
+		[Fact]
+		public void whenOneNumberIsUsedThenReturnValueIsThatSameNumber( )
+		{
+			var result = StringCalculator.Add("3");
+			Assert.Equal( 3, result );
+		}
+
+		[Fact]
+		public void whenTwoNumbersAreUsedThenReturnValueIsTheirSum( )
+		{
+			var result = StringCalculator.Add("3,6");
+			Assert.Equal( 9, result );
+		}
 	}
 }
