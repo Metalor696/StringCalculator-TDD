@@ -10,13 +10,13 @@ namespace StringCalculator
 		{
 			int total = 0;
 
+			if ( string.IsNullOrEmpty( userStringCommand ) )
+				return total;
+
 			var delimiterKey = "//";
 			var delimiters = new List<char> { ',', '\n' };			
 
-			string workingString = userStringCommand;
-
-			if ( string.IsNullOrEmpty( userStringCommand ) )
-				return total;
+			string workingString = userStringCommand;			
 
 			if ( userStringCommand.StartsWith( delimiterKey ) )
 			{
@@ -26,15 +26,33 @@ namespace StringCalculator
 
 			var stringList = workingString.Split( delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries ).ToList( );
 
-			Console.WriteLine("start");
-			stringList.ForEach( x => Console.WriteLine(x));
+			var intsToCalculate = getNumbersFromString( stringList ).Where(x => x <= 1000 ).ToList();
 
-			var intsToCalculate = getNumbersFromString( stringList );
+			CheckCollectionIsPositive(intsToCalculate);
 			
 			intsToCalculate.ForEach( x => total += x );
 
 			return total;
 		}
+
+		private void CheckCollectionIsPositive( List<int> numbers )
+		{
+			List<int> negativeInts = new List<int>();
+
+			foreach(int number in numbers)
+			{
+				if ( number < 0 )
+				{
+					negativeInts.Add(number);
+				}
+			}
+
+			if( negativeInts.Any() )
+			{
+				throw new InvalidArgumentException( $"Come on, mate. You used [{string.Join(", ", negativeInts.Select(x => x))}]. Negative numbers are NOT allowed.");
+			}
+		}
+
 
 		private List<char> getCustomDelimiters( string workingString )
 		{

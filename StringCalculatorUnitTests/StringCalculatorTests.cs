@@ -76,5 +76,31 @@ namespace StringCalculatorUnitTests
 
 			Assert.Equal( expectedInt, result );
 		}
+
+		[Fact]
+		public void whenNegativeNumberIsUsedThenRuntimeExceptionIsThrown( )
+		{
+			Assert.Throws<InvalidArgumentException>( () => StringCalculator.Add( "3,-6,15,18,46,33" ));
+		}
+
+		[Fact]
+		public void whenNegativeNumbersAreUsedThenRuntimeExceptionIsThrown( )
+		{
+			Exception exception = null;
+
+			try
+			{
+				StringCalculator.Add( "3,-6,15,-18,46,-33" );
+			}
+			catch ( InvalidArgumentException e )
+			{
+				exception = e;
+			}
+			
+			Assert.NotNull( exception) ;
+			Assert.Equal( "Come on, mate. You used [-6, -18, -33]. Negative numbers are NOT allowed.", exception.Message );
+
+		}
+
 	}
 }
