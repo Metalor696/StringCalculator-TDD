@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace StringCalculator
 {
@@ -14,14 +15,16 @@ namespace StringCalculator
 				return total;
 
 			var delimiterKey = "//";
-			var delimiters = new List<char> { ',', '\n' };			
+			var delimiters = new List<string> { ",", "\n" };			
 
 			string workingString = userStringCommand;			
 
 			if ( userStringCommand.StartsWith( delimiterKey ) )
 			{
 				workingString = workingString.Remove( 0, 2 );
-				delimiters.AddRange( getCustomDelimiters( workingString ) );
+				var customDelimiters = getCustomDelimiters( workingString );
+				delimiters.AddRange( customDelimiters );
+				workingString = RemoveCustomDelimiters(customDelimiters, workingString);
 			}
 
 			var stringList = workingString.Split( delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries ).ToList( );
@@ -53,10 +56,33 @@ namespace StringCalculator
 			}
 		}
 
-
-		private List<char> getCustomDelimiters( string workingString )
+		private string RemoveCustomDelimiters(List<string> customDelimiters, string sourceString)
 		{
-			var customDelimiters = new List<char>(){ workingString.First() };
+			foreach( string delimiter in customDelimiters )
+			{
+				var delimiterKey = "[" + delimiter + "]";
+
+				int index = sourceString.IndexOf(delimiterKey);
+				sourceString = (index < 0)
+    				? sourceString
+    				: sourceString.Remove(index, delimiterKey.Length);
+			}
+
+			return sourceString;			
+		}
+
+		private List<string> getCustomDelimiters( string sourceString )
+		{
+			var customDelimiters = new List<string>(){ };
+			var pattern = @"\[(.*?)\]";
+
+			var matches = Regex.Matches(sourceString, pattern);
+
+			foreach (var match in matches)
+			{
+				var delimiterValue = match.ToString().Replace("[", "").Replace("]","");
+				customDelimiters.Add( delimiterValue );
+			}			
 
 			return customDelimiters;
 		}
@@ -69,9 +95,9 @@ namespace StringCalculator
 			{
 				intList =  stringList.Select( x => int.Parse(x)).ToList() ;
 			}
-			catch ( FormatException e )
+			catch ( FormatException )
 			{
-				throw new InvalidArgumentException( "Please don't try to add numbers that aren't actually numbers, mate.", e );
+				throw new InvalidArgumentException( "Please don't try to add numbers that aren't actually numbers, mate." );
 			}
 
 			return intList;
@@ -83,10 +109,6 @@ namespace StringCalculator
 		public InvalidArgumentException( string message ) : base( message )
 		{
 
-		}
-
-		public InvalidArgumentException( string message, Exception innerException ) : base( message, innerException )
-		{
 		}
 	}
 }

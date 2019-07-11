@@ -72,7 +72,7 @@ namespace StringCalculatorUnitTests
 		public void whenDelimiterIsSpecifiedThenItIsUsedToSeparateNumbers( )
 		{
 			var expectedInt = 3 + 6 + 15;
-			var result = StringCalculator.Add("//;\n3;6;15");
+			var result = StringCalculator.Add("//[;]\n3;6;15");
 
 			Assert.Equal( expectedInt, result );
 		}
@@ -102,5 +102,16 @@ namespace StringCalculatorUnitTests
 
 		}
 
+		[Fact]
+		public void whenOneOrMoreNumbersAreGreaterThan1000IsUsedThenItIsNotIncludedInSum( )
+		{
+			Assert.Equal( 3+1000+6, StringCalculator.Add( "3,1000,1001,6,1234" ));
+		}
+
+		[Fact]
+		public void WhenADelimiterOfLengthGreaterIsSpecifiedThenItIsUsedToSeparateNumbers( )
+		{
+			Assert.Equal( 1+2+3 , StringCalculator.Add( "//[---]\n1---2---3" ));
+		}
 	}
 }
