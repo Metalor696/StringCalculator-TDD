@@ -109,9 +109,15 @@ namespace StringCalculatorUnitTests
 		}
 
 		[Fact]
-		public void WhenADelimiterOfLengthGreaterIsSpecifiedThenItIsUsedToSeparateNumbers( )
+		public void WhenADelimiterOfLengthGreaterThan1IsSpecifiedThenItIsUsedToSeparateNumbers( )
 		{
 			Assert.Equal( 1+2+3 , StringCalculator.Add( "//[---]\n1---2---3" ));
+		}
+
+		[Fact]
+		public void WhenMultipleDelimitersOfLengthGreaterThan1AreSpecifiedThenItIsUsedToSeparateNumbers( )
+		{
+			Assert.Equal( 1+2+3+4+89 , StringCalculator.Add( "//[enjoythefruitsofyourlabour][hidad][---]\n1---2---3hidad4enjoythefruitsofyourlabour89" ));
 		}
 	}
 }
