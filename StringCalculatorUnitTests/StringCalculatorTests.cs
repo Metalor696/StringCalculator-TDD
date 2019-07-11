@@ -9,11 +9,11 @@ namespace StringCalculatorUnitTests
 	{
 		StringCalculator.StringCalculator StringCalculator = new StringCalculator.StringCalculator();
 
-		[Fact]
+		/*[Fact]
 		public void WhenMoreThan2NumbersAreUsedThenExceptionIsThrown( )
 		{			
 			Assert.Throws<InvalidArgumentException>( () => StringCalculator.Add("1,2,3"));
-		}
+		}*/
 
 		[Fact]
 		public void when2NumbersAreUsedThenNoExceptionIsThrown( )
@@ -48,6 +48,15 @@ namespace StringCalculatorUnitTests
 		{
 			var result = StringCalculator.Add("3,6");
 			Assert.Equal( 9, result );
+		}
+
+		[Fact]
+		public void whenAnyNumberOfNumbersIsUsedThenReturnValuesAreTheirSums( )
+		{
+			var expectedInt = 3 + 6 + 15 + 18 + 46 + 33;
+			var result = StringCalculator.Add("3,6,15,18,46,33");
+
+			Assert.Equal( expectedInt, result );
 		}
 	}
 }

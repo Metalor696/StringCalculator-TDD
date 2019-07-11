@@ -8,18 +8,15 @@ namespace StringCalculator
 	{
 		public int Add( string numbersToAdd )
 		{
+			int total = 0;
+
 			if ( string.IsNullOrEmpty( numbersToAdd) )
-				return 0;
+				return total;
 
 			var stringList = numbersToAdd.Split(",").ToList();
 
 			var intsToCalculate = getNumbersFromString( stringList );
 			
-			if ( intsToCalculate.Count > 2 )
-				throw new InvalidArgumentException( "Please don't provide more than 2 numbers to add, mate." );
-
-			int total = 0;
-			 
 			intsToCalculate.ForEach( x => total += x );
 
 			return total;
